@@ -1,0 +1,212 @@
+<html lang="en">
+
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<title> Projet - OptaPlanner </title>
+
+	<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vis-timeline@7.4.9/styles/vis-timeline-graph2d.min.css"
+          integrity="sha256-VzPuX2N5f+QlIAqqWaRTrh8oY/Ecry74lBiCrweCzyA=" crossorigin="anonymous">
+          -->
+
+	<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/webjars/font-awesome/css/all.css" />
+	<!--<link href="//unpkg.com/vis-timeline@latest/dist/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />-->
+	<link rel="stylesheet" type="text/css" href="/vis.css" />
+	<link rel="stylesheet" type="text/css" href="/style.css" />
+	</style>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="https://www.optaplanner.org">
+				<img src="stellantis.png" alt="Stellantis logo">
+			</a>
+		</nav>
+		<div class="sticky-top d-flex justify-content-center align-items-center" aria-live="polite" aria-atomic="true">
+			<div id="notificationPanel" style="position: absolute; top: .5rem;"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Plannification des projets moteurs et boites</h1>
+			</div>
+		</div>
+		<div>
+			<button id="refreshButton" type="button" class="btn btn-secondary">
+				<span class="fas fa-refresh"></span> Refresh
+			</button>
+			<button id="solveButton" type="button" class="btn btn-success">
+				<span class="fas fa-play"></span> Solve
+			</button>
+			<button id="stopSolvingButton" type="button" class="btn btn-danger">
+				<span class="fas fa-stop"></span> Stop solving
+			</button>
+			<!--<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ressourceModal">
+				Importer ressources
+			</button>-->
+			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#prototypeModal">
+				Creer prototype
+			</button>
+			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#teamModal">
+				Creer team
+			</button>
+			<button id="resetButton" type="button" class="btn btn-warning">
+				<span class="fas fa-refresh"></span> Reset
+			</button>
+		</div>
+		<div><span id="score" class="score ml-2 align-middle font-weight-bold">Score: ?</span></div>
+
+		<div class="modal fade" id="teamModal" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="teamModalLabel">FORMULAIRE TEAM</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<label for="prototypeName" class="form-label">Les ressources de l'usine Tremery</label>
+						<input type="number" id="xValue" class="form-control">
+						<label for="prototypeName" class="form-label">Les ressources de l'usine Atelier Carrieres sous Poissy</label>
+						<input type="number" id="yValue" class="form-control">
+						<label for="prototypeName" class="form-label">Les ressources de l'usine Valencienne</label>
+						<input type="number" id="zValue" class="form-control">
+						<div class="mt-2" id="teamMsg">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Fermer</button>
+						<button type="button" class="btn btn-primary" onclick="submitTeam()">Enregistrer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="prototypeModal" tabindex="-1" aria-labelledby="prototypeModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="prototypeModalLabel">FORMULAIRE PROTOTYPE</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<label for="prototypeName" class="form-label">Nom du protoype</label>
+						<input type="text" id="prototypeName" class="form-control">
+						<label for="prototypeDelivery" class="form-label">Date de livraison</label>
+						<input type="date" id="prototypeDelivery" class="form-control">
+						<div class="mt-2">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="typeRadio" id="motorType"
+									value="MOTOR">
+								<label class="form-check-label" for="motorType">Moteur</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="typeRadio" id="manualType"
+									value="MANUEL">
+								<label class="form-check-label" for="manualType">Boite manuel</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="typeRadio" id="autoType"
+									value="AUTO">
+								<label class="form-check-label" for="autoType">Boite automatique</label>
+							</div>
+						</div>
+						<div class="mt-2">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="phaseRadio" id="protoPhase"
+									value="PROTO">
+								<label class="form-check-label" for="protoPhase">Prototype</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="phaseRadio" id="elPhase" value="EL">
+								<label class="form-check-label" for="elPhase">En ligne</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="phaseRadio" id="hlPhase" value="HL">
+								<label class="form-check-label" for="hlPhase">Hors ligne</label>
+							</div>
+						</div>
+						<div class="mt-2">
+							<label for="prototypeName" class="form-label">Usine de montage</label>
+							<select id="factory" class="form-select" aria-label="Default select example">
+							  <option value="x">Usine Tremery</option>
+							  <option value="y">Atelier Carrieres sous Poissy</option>
+							  <option value="z">Usine Valencienne</option>
+							</select>
+						</div>
+						<div class="mt-2" id="prototypeMsg">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="clearData()">Fermer</button>
+						<button type="button" class="btn btn-primary" onclick="submitPrototype()">Enregistrer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="ressourceModal" tabindex="-1" aria-labelledby="ressourceModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="ressourceModalLabel">FORMULAIRE RESSOURCE</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+					<div class="mt-2">
+						<label for="resourceFile" class="form-label">Veuillez utiliser un fichier excel avec le bon forma</label>
+					</div>
+					<div class="mt-2">
+						<input type="file" id="resourceFile" class="mb-2">
+					</div>
+					<div class="mt-2" id="resourceSize"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+						<button type="button" id="resourceButton" class="btn btn-info" onclick="uplaodResource()">
+						<span id="resourceSpan" class="fas fa-sync"></span>
+							<span id="resourceSpanText"> Enregistrer </span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="mb-2" id="importBanner"></div>
+		<div class="mt-4">
+			<div class="row">
+				<div class="col-md-9 col-sm-9" id="prototypeDiv"></div>
+				<div class="col-md-3 col-sm-3" id="nullId"></div>
+			</div>
+		</div>
+		<div class="md-4" id="displayResolve"></div>
+		<div class="mb-4 tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="visualization" role="tabpanel"
+				aria-labelledby="containerPanelTab">
+			</div>
+		</div>
+		<div class="mb-4 tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="byPrototypePanel" role="tabpanel"
+				aria-labelledby="byPrototypePanelTab">
+				<!--<div id="employeeVisualization"></div>-->
+			</div>
+			<div class="tab-pane fade" id="byTaskPanel" role="tabpanel" aria-labelledby="byTaskPanelTab">
+				<div id="managerVisualization"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<script src="/webjars/js-joda/dist/js-joda.min.js"></script>
+<script type="text/javascript" src="/vis.js"></script>
+<!--<script type="text/javascript" src="//unpkg.com/vis-timeline@latest/dist/vis-timeline-graph2d.min.js"></script>-->
+<script type="text/javascript" src="/app.js"></script>
+
+</html>
