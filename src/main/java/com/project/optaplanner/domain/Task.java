@@ -26,7 +26,7 @@ public class Task {
 	
 	private String name;
 	
-	private String factory;
+	private String usine;
 	
 	private LocalDate idealStartDate;
 	
@@ -59,7 +59,7 @@ public class Task {
 	public Task() {
 	}
 
-	public Task(String name,LocalDate idealStartDate,LocalDate idealEndDate,int duration, int sequence, int margin, String phase, String type, String factory) {
+	public Task(String name,LocalDate idealStartDate,LocalDate idealEndDate,int duration, int sequence, int margin, String phase, String type, String usine) {
 		this.name = name;
 		this.idealStartDate = idealStartDate;
 		this.idealEndDate = idealEndDate;
@@ -68,11 +68,11 @@ public class Task {
 		this.margin = margin;
 		this.phase = phase;
 		this.type = type;
-		this.factory = factory;
+		this.usine = usine;
 	}
 
 	public Task(Long id, String name,LocalDate idealStartDate,LocalDate idealEndDate, LocalDate startDate, 
-			LocalDate endDate, int duration, int sequence, int margin, String phase, String type, String factory) {
+			LocalDate endDate, int duration, int sequence, int margin, String phase, String type, String usine) {
 		this.id = id;
 		this.name = name;
 		this.idealStartDate = idealStartDate;
@@ -83,7 +83,7 @@ public class Task {
 		this.margin = margin;
 		this.phase = phase;
 		this.type = type;
-		this.factory = factory;
+		this.usine = usine;
 		this.endDate = EndDateUpdatingVariableListener.calculateEndDate(startDate, duration);
 	}
 	
@@ -199,12 +199,12 @@ public class Task {
 		this.team = team;
 	}
 
-	public String getFactory() {
-		return factory;
+	public String getUsine() {
+		return usine;
 	}
 
-	public void setFactory(String factory) {
-		this.factory = factory;
+	public void setUsine(String usine) {
+		this.usine = usine;
 	}
 	
 }

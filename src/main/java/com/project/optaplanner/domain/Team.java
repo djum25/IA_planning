@@ -16,7 +16,7 @@ public class Team {
 	
 	private String name;
 	
-	private String factory;
+	private String usine;
 	
 	private int sequence;
 	
@@ -24,16 +24,16 @@ public class Team {
 
 	public Team() {}
 
-	public Team(String name, String factory, int sequence) {
+	public Team(String name, String usine, int sequence) {
 		this.name = name;
-		this.factory = factory;
+		this.usine = usine;
 		this.sequence = sequence;
 	}
 
-	public Team(Long id, String name, String factory, int sequence) {
+	public Team(Long id, String name, String usine, int sequence) {
 		this.id = id;
 		this.name = name;
-		this.factory = factory;
+		this.usine = usine;
 		this.sequence = sequence;
 	}
 
@@ -53,12 +53,12 @@ public class Team {
 		this.name = name;
 	}
 
-	public String getFactory() {
-		return factory;
+	public String getUsine() {
+		return usine;
 	}
 
-	public void setFactory(String factory) {
-		this.factory = factory;
+	public void setUsine(String usine) {
+		this.usine = usine;
 	}
 
 	public int getSequence() {

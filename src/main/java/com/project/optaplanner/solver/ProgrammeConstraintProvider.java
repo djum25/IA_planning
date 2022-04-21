@@ -143,7 +143,7 @@ public class ProgrammeConstraintProvider implements ConstraintProvider{
     public Constraint rightTeamConstraint(ConstraintFactory constraintFactory) {
 		// Don't affect team to task without they have the same factory
     	return constraintFactory.forEach(Task.class).
-    			filter(task-> !task.getFactory().equals(task.getTeam().getFactory())).
+    			filter(task-> !task.getUsine().equals(task.getTeam().getUsine())).
     			penalize("Right team conflict", HardSoftLongScore.ONE_HARD);
 	}
 }

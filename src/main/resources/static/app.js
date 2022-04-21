@@ -170,7 +170,6 @@ function uplaodResource() {
 }
 
 function uploadHoliday() {
-	//yes
 	document.getElementById("holidaySpan").classList.add("fa-spin");
 	document.getElementById("holidayButton").classList.remove("btn-info");
 	document.getElementById("holidayButton").classList.add("btn-danger");
@@ -222,13 +221,25 @@ function submitTeam(){
 			if (xhr.status == 200) {
 				var json = JSON.parse(xhr.responseText);
 				console.log(json);
-					var divInfo = document.getElementById("teamMsg");
-					divInfo.innerHTML=`<div class="alert alert-info"><p>${json.x}</p><p>${json.y}</p><p>${json.z}</p> </div>`
+				Swal.fire(
+			      'Stauts !',
+			      `<div class="alert alert-info"><p>${json.x}</p><p>${json.y}</p><p>${json.z}</p> </div>`,
+			      'success'
+			    )
 			}
 			else if (xhr.status == 404) {
-				console.log("Not found");
+				Swal.fire(
+			      'Stauts !',
+			      `<div class="alert alert-info"><p>Not found</p></div>`,
+			      'error'
+			    )
 			}
-			else { console.log(xhr.status) }
+			else {
+				Swal.fire(
+			      'Stauts !',
+			      `<div class="alert alert-info"><p>Il y'a une erreur de type ${xhr.status}</p></div>`,
+			      'error'
+			    )}
 		}
  	}
  }
@@ -252,21 +263,21 @@ function submitPrototype() {
 			if (xhr.status == 200) {
 				var json = JSON.parse(xhr.responseText);
 				console.log(json);
-					var divInfo = document.getElementById("prototypeMsg");
-					divInfo.innerHTML=`<div class="alert alert-info">Status:${json.prototype.name} ${json.message}</div>`
-					//divInfo.classList.add("alert");
-					//divInfo.classList.add("alert-info");
-					//divInfo.append("Status : " + json.message);
+					Swal.fire(
+				      `${json.prototype.name}`,
+				      `<div class="alert alert-info"><p>${json.message}</p></div>`,
+				      'success'
+				    )
 			}
 			else if (xhr.status == 404) {
-				console.log("Not found");
+				Swal.fire(
+			      'Stauts !',
+			      `<div class="alert alert-info"><p>Not found</p></div>`,
+			      'error'
+			    )
 			}
-			else { console.log(xhr.status) }
+			else {Swal.fire('Stauts !',`<div class="alert alert-info"><p>Il y'a une erreur de type ${xhr.status}</p></div>`,'error')}
 		}
-		/*document.getElementById("prototypeSpan").classList.remove("fa-spin");
-		document.getElementById("prototypeSpanText").innerHTML = "Enregistrer";
-		document.getElementById("prototypeButton").classList.remove("btn-danger");
-		document.getElementById("prototypeButton").classList.add("btn-info");*/
 	}
 }
 
@@ -336,19 +347,29 @@ function deletePrototype(id) {
 }
 
 function resetDatabase(){
-	var button = document.getElementById("resetButton") ;
-	button.innerHTML = `<span class="fas fa-spinner fa-pulse"></span> Reinitialisation en cours`;
-	var xhr = new XMLHttpRequest();
+	Swal.fire({
+	  title: 'Attention ?',
+	  text: "Toute la base de données sera vidé",
+	  icon: 'warning',
+	  showCancelButton: true,
+	  confirmButtonColor: '#3085d6',
+	  cancelButtonColor: '#d33',
+	  cancelButtonText:'Annuler',
+	  confirmButtonText: 'Oui, réunitialisé !'
+	}).then((result) => {
+	  if (result.isConfirmed) {
+		var xhr = new XMLHttpRequest();
 	xhr.open("GET", "/prototype/delete", true);
 	xhr.send();
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4) 
-			if(xhr.status == 200)
+			if(xhr.status == 200){
 				setTimeout(timer,2000);
+				Swal.fire('Réunitialisé !','Votre base de donnée est vidé','success')
 				}
-				
-	
-}
+		}
+	  }
+	  })}
 
 function timer(){
 	var button = document.getElementById("resetButton") ;
