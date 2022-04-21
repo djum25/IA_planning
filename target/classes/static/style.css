@@ -1,0 +1,55 @@
+.char-height{
+	min-height: 100vh;
+	max-height: 300vh;
+}
+
+.my-text-start{
+	font-size: 10px;
+	text-align: left;
+	color: green;
+}
+
+.my-text-end{
+	font-size: 10px;
+	text-align: right;
+	color: red;
+}
+
+.my-text-task{
+	font-size: 12;
+	text-align: center;
+}
+
+.my-row{
+	margin-bottom: 10px;
+	border-bottom: 1px solid grey;
+}
+
+.my-column{
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.my-espacing{
+	margin-bottom: 20px;
+}
+
+.vis-time-axis .vis-grid.vis-saturday,
+.vis-time-axis .vis-grid.vis-sunday {
+background: gray;
+}
+.vis-time-axis .vis-text.vis-saturday,
+.vis-time-axis .vis-text.vis-sunday {
+color: white;
+}
+.vis-item {
+background-color: #d6e6ff ; /*#D5D8DC ;*/
+border-color: #000000;         /*#1371fe;*/
+color: #000000;
+border-left-width: 3px;
+border-left-style: solid;
+font-weight: 500;
+opacity: .8;
+font-size: 13px;
+height: 80px;
+}
