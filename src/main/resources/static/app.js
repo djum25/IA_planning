@@ -169,20 +169,12 @@ function uplaodResource() {
 	}
 }
 
-function uploadHoliday() {
-	document.getElementById("holidaySpan").classList.add("fa-spin");
-	document.getElementById("holidayButton").classList.remove("btn-info");
-	document.getElementById("holidayButton").classList.add("btn-danger");
-	document.getElementById("holidaySpanText").append("en cours...");
-	if (document.getElementById("holidayFile").files.length == 0) {
+function uploadHolidays() {
+	if (document.getElementById("holidays").files.length == 0) {
 		console.log("... Aucun fichier ...");
-		document.getElementById("holidaySpan").classList.remove("fa-spin");
-		document.getElementById("holidaySpanText").innerHTML = "Enregistrer";
-		document.getElementById("holidayButton").classList.remove("btn-danger");
-		document.getElementById("holidayButton").classList.add("btn-info");
 		window.alert("aucun fichier");
 	} else {
-		let file = document.getElementById("holidayFile").files[0];
+		let file = document.getElementById("holidays").files[0];
 		let formData = new FormData();
 		formData.append("file", file);
 		var xhr = new XMLHttpRequest();
@@ -192,15 +184,26 @@ function uploadHoliday() {
 			if (xhr.readyState == 4)
 				if (xhr.status == 200) {
 					var json = JSON.parse(xhr.responseText);
-					var divInfo = document.getElementById("holidaySize");
-					divInfo.classList.add("alert");
-					divInfo.classList.add("alert-info");
+					Swal.fire(
+						'Stauts !',
+						`<div class="alert alert-info"><p>Vous venez de faire ${json.nombre} Enregistrement</p></div>`,
+						'success'
+					  )
 					divInfo.append("Vous venez de faire " + json.nombre + " Enregistrement");
-					document.getElementById("holidaySpan").classList.remove("fa-spin");
-					document.getElementById("holidaySpanText").innerHTML = "Enregistrer";
-					document.getElementById("holidayButton").classList.remove("btn-danger");
-					document.getElementById("holidayButton").classList.add("btn-info");
 				}
+				else if (xhr.status == 404) {
+					Swal.fire(
+					  'Stauts !',
+					  `<div class="alert alert-info"><p>Not found</p></div>`,
+					  'error'
+					)
+				}
+				else {
+					Swal.fire(
+					  'Stauts !',
+					  `<div class="alert alert-info"><p>Il y'a une erreur de type ${xhr.status}</p></div>`,
+					  'error'
+					)}
 		}
 	}
 }
@@ -248,11 +251,12 @@ function submitPrototype() {
 	
 	const protoName = document.getElementById("prototypeName");
 	const protoDelivery = document.getElementById("prototypeDelivery");
-	const type = document.querySelector('input[name=typeRadio]:checked').value;
-	const phase = document.querySelector('input[name=phaseRadio]:checked').value;
+	const type = document.getElementById('type').value;
+	const phase = document.getElementById('phase').value;
+	const moyen = document.getElementById('moyen').value;
 	const factory = document.getElementById('factory').value;
 	const date = new Date(protoDelivery.value)
-	var data = JSON.stringify({ id: null, name: protoName.value, deliveryDate: date, phase: phase, type: type, usine: factory });
+	var data = JSON.stringify({ id: null, name: protoName.value, deliveryDate: date, phase: phase, type: type, moyen:moyen, usine: factory });
 	console.log(data);
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "/prototype", true);
