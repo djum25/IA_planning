@@ -36,9 +36,9 @@
 			<button id="stopSolvingButton" type="button" class="btn btn-danger">
 				<span class="fas fa-stop"></span> Stop solving
 			</button>
-			<!--<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ressourceModal">
-				Importer ressources
-			</button>-->
+			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ressourceModal">
+				Importer vacances
+			</button>
 			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#prototypeModal">
 				Creer prototype
 			</button>
@@ -72,7 +72,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">Fermer</button>
-						<button type="button" class="btn btn-primary" onclick="submitTeam()">Enregistrer</button>
+						<button type="button" class="btn btn-primary" onclick="submitTeam()" data-dismiss="modal">Enregistrer</button>
 					</div>
 				</div>
 			</div>
@@ -93,40 +93,35 @@
 						<label for="prototypeDelivery" class="form-label">Date de livraison</label>
 						<input type="date" id="prototypeDelivery" class="form-control">
 						<div class="mt-2">
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="typeRadio" id="motorType"
-									value="MOTOR">
-								<label class="form-check-label" for="motorType">Moteur</label>
-							</div>
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="typeRadio" id="manualType"
-									value="MANUEL">
-								<label class="form-check-label" for="manualType">Boite manuel</label>
-							</div>
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="typeRadio" id="autoType"
-									value="AUTO">
-								<label class="form-check-label" for="autoType">Boite automatique</label>
-							</div>
+							<label for="type" class="form-label">Type d'organe</label>
+							<select id="type" class="form-control">
+								<option value="MOTOR">Moteur</option>
+								<option value="MANUEL">Boite manuel</option>
+								<option value="AUTO">Boite automatique</option>
+							</select>
 						</div>
 						<div class="mt-2">
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="phaseRadio" id="protoPhase"
-									value="PROTO">
-								<label class="form-check-label" for="protoPhase">Prototype</label>
-							</div>
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="phaseRadio" id="elPhase" value="EL">
-								<label class="form-check-label" for="elPhase">En ligne</label>
-							</div>
-							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="phaseRadio" id="hlPhase" value="HL">
-								<label class="form-check-label" for="hlPhase">Hors ligne</label>
-							</div>
+							<label for="phase" class="form-label">Type de phase</label>
+							<select id="phase" class="form-control" aria-label="Default select example">
+								<option value="EL">En ligne</option>
+								<option value="HL">Hors ligne</option>
+								<option value="PROTO">Prototype</option>
+							</select>
 						</div>
 						<div class="mt-2">
-							<label for="prototypeName" class="form-label">Usine de montage</label>
-							<select id="factory" class="form-select" aria-label="Default select example">
+							<label for="moyen" class="form-label">Type de moyen</label>
+							<select id="moyen" class="form-control" aria-label="Default select example">
+							  <option value="BM">BM</option>
+							  <option value="PVRS">PVRS</option>
+							  <option value="GMP">GMP</option>
+							  <option value="VRS">VRS</option>
+							  <option value="EL">EL</option>
+							  <option value="BB">BB</option>
+							</select>
+						</div>
+						<div class="mt-2">
+							<label for="factory" class="form-label">Usine de montage</label>
+							<select id="factory" class="form-control" aria-label="Default select example">
 							  <option value="X">Usine Tremery</option>
 							  <option value="Y">Atelier Carrieres sous Poissy</option>
 							  <option value="Z">Usine Valencienne</option>
@@ -137,7 +132,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="clearData()">Fermer</button>
-						<button type="button" class="btn btn-primary" onclick="submitPrototype()">Enregistrer</button>
+						<button type="button" class="btn btn-primary" onclick="submitPrototype()" data-dismiss="modal">Enregistrer</button>
 					</div>
 				</div>
 			</div>
@@ -147,26 +142,22 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="ressourceModalLabel">FORMULAIRE RESSOURCE</h5>
+						<h5 class="modal-title" id="ressourceModalLabel">FORMULAIRE VACANCE ET CONGES</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 					<div class="mt-2">
-						<label for="resourceFile" class="form-label">Veuillez utiliser un fichier excel avec le bon forma</label>
+						<label for="holidays" class="form-label">Veuillez utiliser un fichier excel avec le bon forma</label>
 					</div>
 					<div class="mt-2">
-						<input type="file" id="resourceFile" class="mb-2">
+						<input type="file" id="holidays" class="mb-2">
 					</div>
-					<div class="mt-2" id="resourceSize"></div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
-						<button type="button" id="resourceButton" class="btn btn-info" onclick="uplaodResource()">
-						<span id="resourceSpan" class="fas fa-sync"></span>
-							<span id="resourceSpanText"> Enregistrer </span>
-						</button>
+						<button type="button" id="holidaysButton" class="btn btn-info" data-dismiss="modal" onclick="uploadHolidays()">Enregistrer</button>
 					</div>
 				</div>
 			</div>
@@ -201,7 +192,6 @@
 <script src="/webjars/js-joda/dist/js-joda.min.js"></script>
 <script type="text/javascript" src="/vis.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
-<!--<script type="text/javascript" src="//unpkg.com/vis-timeline@latest/dist/vis-timeline-graph2d.min.js"></script>-->
 <script type="text/javascript" src="/app.js"></script>
 
 </html>
