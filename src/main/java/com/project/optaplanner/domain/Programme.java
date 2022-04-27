@@ -19,6 +19,8 @@ public class Programme {
 
 	@ProblemFactProperty
 	private WorkCalendar workCalendar;
+	@ProblemFactProperty
+	private List<LocalDate> holidays;
 	@ProblemFactCollectionProperty
     @ValueRangeProvider(id = "prototypeRange")
 	private List<Prototype> prototypeList;
@@ -36,21 +38,22 @@ public class Programme {
 	public Programme() {
 	}
 
-	public Programme(WorkCalendar workCalendar, List<Prototype> prototypeList, List<Task> taskList,List<Team> teamList) {
+	public Programme(WorkCalendar workCalendar, List<Prototype> prototypeList, List<Task> taskList,List<Team> teamList,List<LocalDate> holidays) {
 		this.workCalendar = workCalendar;
 		this.prototypeList = prototypeList;
 		this.taskList = taskList;
 		this.teamList = teamList;
+		this.holidays = holidays;
 	}
 	
     @ValueRangeProvider(id = "startDateRange")
     public List<LocalDate> createStartDateList() {
         return workCalendar.getFromDate().datesUntil(workCalendar.getToDate())
-                // Skip weekends. Does not work for holidays.
-                // Keep in sync with EndDateUpdatingVariableListener.updateEndDate().
-                // To skip holidays too, cache all working days in WorkCalendar.
+                /* Skip weekends. Does not work for holidays.
+                 Keep in sync with EndDateUpdatingVariableListener.updateEndDate().
+                 To skip holidays too, cache all working days in WorkCalendar.*/
                 .filter(date -> date.getDayOfWeek() != DayOfWeek.SATURDAY
-                        && date.getDayOfWeek() != DayOfWeek.SUNDAY)
+                        && date.getDayOfWeek() != DayOfWeek.SUNDAY && !holidays.contains(date))
                 .collect(Collectors.toList());
     }
 
@@ -68,6 +71,10 @@ public class Programme {
 
 	public List<Team> getTeamList() {
 		return teamList;
+	}
+
+	public List<LocalDate> getHolidays() {
+		return holidays;
 	}
 
 	public HardSoftLongScore getScore() {
