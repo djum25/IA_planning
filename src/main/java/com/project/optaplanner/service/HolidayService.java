@@ -1,10 +1,12 @@
 package com.project.optaplanner.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -63,5 +65,14 @@ public class HolidayService {
 	
 	public List<Holiday> getHoliday() {
 		return repository.findAll();
+	}
+
+	public List<LocalDate> getHolidaysDate() {
+		return repository.findAll().stream().map(h->h.getDay()).collect(Collectors.toList());
+	}
+
+	public int dayToSkip(LocalDate startDate,LocalDate endDate) {
+		 Long days = startDate.datesUntil(endDate).count();
+		 return days.intValue();
 	}
 }
