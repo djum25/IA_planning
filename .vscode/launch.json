@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProjectOptaplannerApplication<project-optaplanner>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.project.optaplanner.ProjectOptaplannerApplication",
+            "projectName": "project-optaplanner",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
