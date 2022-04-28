@@ -51,6 +51,7 @@ public class HolidayService {
 				map.put("success", true);
 				map.put("message", "Ajouter avec success");
 				map.put("nombre", holidays.size());
+				map.put("dates", getHolidaysDate());
 				workbook.close();
 			}catch (Exception e) {
 				map.put("success", true);
