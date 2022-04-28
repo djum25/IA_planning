@@ -74,9 +74,9 @@ public class ProgrammeConstraintProvider implements ConstraintProvider{
         // Early maintenance is expensive because the sooner maintenance is done, the sooner it needs to happen again.
         return constraintFactory.forEach(Task.class)
                 .filter(task -> task.getIdealEndDate() != null
-                        && task.getEndDate().isBefore(task.getIdealEndDate().plusDays(5)))
+                        && task.getEndDate().isBefore(task.getIdealEndDate().plusDays(15)))
                 .penalizeLong("Before ideal end date", HardSoftLongScore.ONE_SOFT
-                		,task-> DAYS.between(task.getEndDate(), task.getIdealEndDate().plusDays(5)));
+                		,task-> DAYS.between(task.getEndDate(), task.getIdealEndDate().plusDays(15)));
     }
     
     public Constraint afterIdealEndDate(ConstraintFactory constraintFactory) {
