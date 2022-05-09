@@ -1,5 +1,6 @@
 package com.project.optaplanner.rest;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.project.optaplanner.domain.Holiday;
 import com.project.optaplanner.service.HolidayService;
 import com.project.optaplanner.service.TeamService;
+import com.project.optaplanner.service.WorkCalendarService;
 
 @RestController
 public class HolidayController {
@@ -23,6 +25,8 @@ public class HolidayController {
 	private HolidayService service;
 	@Autowired
 	private TeamService teamService;
+	@Autowired
+	private WorkCalendarService workCalendarService;
 	
 	@RequestMapping(value = "/holiday", method = RequestMethod.POST)
 	public Map<String, Object> postHoliday(@RequestParam("file") MultipartFile file) {
@@ -44,6 +48,14 @@ public class HolidayController {
 	@RequestMapping(value = "/team", method = RequestMethod.POST)
 	public Map<String, Object> saveTeam(@RequestBody Map<String, Object> map){
 		return teamService.addTeam(map);
+	}
+
+	@RequestMapping(value = "/workingDay", method = RequestMethod.GET)
+	public Map<String, Object>  workingDay(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("size", workCalendarService.generateWorkingDay().size());
+		map.put("list", workCalendarService.generateWorkingDay());
+		return map;
 	}
 	
 	
