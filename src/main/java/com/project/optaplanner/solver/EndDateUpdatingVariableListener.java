@@ -15,18 +15,24 @@ import org.springframework.stereotype.Component;
 import com.project.optaplanner.domain.Programme;
 import com.project.optaplanner.domain.Task;
 import com.project.optaplanner.service.HolidayService;
+//import com.project.optaplanner.service.WorkCalendarService;
+import com.project.optaplanner.service.WorkCalendarService;
 
 @Component
 public class EndDateUpdatingVariableListener implements VariableListener<Programme, Task>{
 
     private static HolidayService holiday;
+    private static WorkCalendarService calendarService;
 
     @Autowired
     private HolidayService holidayService;
+    @Autowired
+    private WorkCalendarService workCalendarService;
 
     @PostConstruct
     public void init() {
         EndDateUpdatingVariableListener.holiday = holidayService;
+        EndDateUpdatingVariableListener.calendarService = workCalendarService;
     }
 
     @Override
@@ -69,8 +75,9 @@ public class EndDateUpdatingVariableListener implements VariableListener<Program
         
         if (startDate == null) {
             return null;
-        } else {
-            LocalDate endDate = startDate.plusDays(durationInDays);
+        }
+        else {
+            /* LocalDate endDate = startDate.plusDays(durationInDays);
             boolean ref = true;
             List<LocalDate> dates =  startDate.datesUntil(endDate).collect(Collectors.toList());
             Long  notUse = dates.stream().filter(date-> date.getDayOfWeek()==DayOfWeek.SATURDAY || date.getDayOfWeek()==DayOfWeek.SUNDAY
@@ -88,7 +95,15 @@ public class EndDateUpdatingVariableListener implements VariableListener<Program
                         endDate = dates.get(dates.size() - 1);
                     }
                 }
-            }
+        } */
+
+        List<LocalDate>  workingDay = calendarService.generateWorkingDay();
+        int index = workingDay.indexOf(startDate)+durationInDays;
+        if (index >= workingDay.size()) {
+            int weekendPadding = 2 * ((durationInDays + (startDate.getDayOfWeek().getValue() - 1)) / 5);
+            return startDate.plusDays(durationInDays + weekendPadding);
+        }
+        LocalDate endDate = workingDay.get(index);
             return endDate;
         }
 
@@ -100,6 +115,14 @@ public class EndDateUpdatingVariableListener implements VariableListener<Program
             // Keep in sync with Programme.createStartDateList().
             int weekendPadding = 2 * ((durationInDays + (startDate.getDayOfWeek().getValue() - 1)) / 5);
             return startDate.plusDays(durationInDays + weekendPadding);
-        }*/
+        } else{
+            List<LocalDate>  workingDay = calendarService.generateWorkingDay();
+            int index = workingDay.indexOf(startDate)+durationInDays;
+            if (index >= workingDay.size()) {
+                int weekendPadding = 2 * ((durationInDays + (startDate.getDayOfWeek().getValue() - 1)) / 5);
+                return startDate.plusDays(durationInDays + weekendPadding);
+            }
+            LocalDate endDate = workingDay.get(index);
+        */
     }
 }
