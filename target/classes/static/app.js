@@ -89,10 +89,12 @@ function refreshSchedule() {
                     .append($(`<h5 class="card-title mb-1" style="background-color: ${color}"/>`).text(job.name))
                     .append($(`<p class="card-text ml-2 mb-0"/>`).text(`${job.duration} workdays`));
                 if (beforeReady) {
-                    containerTaskElement.append($(`<p class="badge badge-dark mb-0"/>`).text(`Tache en avance (too early)`));
+					const day = JSJoda.Period.between(JSJoda.LocalDate.parse(job.startDate),JSJoda.LocalDate.parse(job.idealStartDate));
+                    containerTaskElement.append($(`<p class="badge badge-dark mb-0"/>`).text(`Tache en avance (${day})`));
                 }
                 if (afterDue) {
-                    containerTaskElement.append($(`<p class="badge badge-dark mb-0"/>`).text(`Tache en retard (too late)`));
+					const day = JSJoda.Period.between(JSJoda.LocalDate.parse(job.idealEndDate),JSJoda.LocalDate.parse(job.endDate));
+                    containerTaskElement.append($(`<p class="badge badge-dark mb-0"/>`).text(`Tache en retard (${day})`));
                 }
                 
                 containerItemDataSet.add({
